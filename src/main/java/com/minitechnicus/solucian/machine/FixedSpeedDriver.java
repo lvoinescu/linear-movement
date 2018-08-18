@@ -8,7 +8,7 @@ public class FixedSpeedDriver implements Driver {
     private final Machine machine;
     private double maxAngularSpeed;
     private final SpeedCalculator speedCalculator;
-
+    private volatile boolean moving;
 
     public FixedSpeedDriver(Machine machine,
                             double maxAngularSpeed) {
@@ -21,13 +21,20 @@ public class FixedSpeedDriver implements Driver {
         this.maxAngularSpeed = maxAngularSpeed;
     }
 
+    @Override
     public void moveToPoint(double destination) {
         doMoveToPoint(destination);
     }
 
+    @Override
     public void resetToZeroPosition() {
         double destination = 0.0d;
         doMoveToPoint(destination);
+    }
+
+    @Override
+    public double getCurrentSpeed() {
+        return moving ? maxAngularSpeed : 0.0d;
     }
 
     private synchronized void doMoveToPoint(double destination) {
@@ -37,6 +44,7 @@ public class FixedSpeedDriver implements Driver {
         int noOfRequiredSteps = (int) ((Math.abs(destination - machine.getConveyorBelt().getCurrentPosition())) / distancePerStepAngle);
 
         StepDirection stepDirection = (destination > machine.getConveyorBelt().getCurrentPosition()) ? StepDirection.CLOCKWISE : StepDirection.COUNTER_CLOCKWISE;
+        moving = true;
         for (int i = 0; i < noOfRequiredSteps; i++) {
             try {
                 Thread.sleep(speedCalculator.rotationSpeedToDelay(machine.getMotor().getStepAngle(), maxAngularSpeed));
@@ -45,5 +53,6 @@ public class FixedSpeedDriver implements Driver {
             }
             machine.getMotor().moveStep(stepDirection);
         }
+        moving = false;
     }
 }

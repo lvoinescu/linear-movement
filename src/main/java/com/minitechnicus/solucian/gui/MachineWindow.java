@@ -106,6 +106,10 @@ public class MachineWindow extends JPanel implements MachineListener, ActionList
         g2d.setTransform(at);
         g2d.drawImage(image, 0, 200, this);
         g2d.dispose();
+
+        g.drawString("Current position:" + Math.round(machine.getConveyorBelt().getCurrentPosition()), 10, 340);
+        g.drawString("Current speed:" + Math.round(driver.getCurrentSpeed()), 10, 355);
+        g.drawString("Current motor angle:" + Math.round(machine.getMotor().getAnglePosition()), 10, 370);
     }
 
     @Override

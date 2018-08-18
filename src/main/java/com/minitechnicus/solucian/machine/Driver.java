@@ -7,4 +7,6 @@ public interface Driver {
     void setMaxAngularSpeed(double maxAngularSpeed);
 
     void resetToZeroPosition();
+
+    double getCurrentSpeed();
 }
