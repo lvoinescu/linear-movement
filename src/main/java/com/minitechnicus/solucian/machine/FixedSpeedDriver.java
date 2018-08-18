@@ -3,21 +3,22 @@ package com.minitechnicus.solucian.machine;
 import com.minitechnicus.solucian.components.Machine;
 
 
-public class DefaultDriver implements Driver {
+public class FixedSpeedDriver implements Driver {
 
     private final Machine machine;
-    private double maxSpeed;
+    private double maxAngularSpeed;
     private final SpeedCalculator speedCalculator;
 
 
-    public DefaultDriver(Machine machine, double maxSpeed) {
+    public FixedSpeedDriver(Machine machine,
+                            double maxAngularSpeed) {
         this.machine = machine;
-        this.maxSpeed = maxSpeed;
+        this.maxAngularSpeed = maxAngularSpeed;
         speedCalculator = new SpeedCalculator();
     }
 
-    public void setMaxSpeed(double maxSpeed) {
-        this.maxSpeed = maxSpeed;
+    public void setMaxAngularSpeed(double maxAngularSpeed) {
+        this.maxAngularSpeed = maxAngularSpeed;
     }
 
     public void moveToPoint(double destination) {
@@ -38,7 +39,7 @@ public class DefaultDriver implements Driver {
         StepDirection stepDirection = (destination > machine.getConveyorBelt().getCurrentPosition()) ? StepDirection.CLOCKWISE : StepDirection.COUNTER_CLOCKWISE;
         for (int i = 0; i < noOfRequiredSteps; i++) {
             try {
-                Thread.sleep(speedCalculator.rotationSpeedToDelay(machine.getMotor().getStepAngle(), maxSpeed));
+                Thread.sleep(speedCalculator.rotationSpeedToDelay(machine.getMotor().getStepAngle(), maxAngularSpeed));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
