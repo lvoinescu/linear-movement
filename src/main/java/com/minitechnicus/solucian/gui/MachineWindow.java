@@ -25,7 +25,7 @@ public class MachineWindow extends JPanel implements MachineListener, ActionList
     private JTextField moveToPointInput;
     private BufferedImage image;
 
-    public MachineWindow(Machine machine) {
+    MachineWindow(Machine machine) {
         super();
         this.machine = machine;
         machine.addObserver(this);
@@ -73,6 +73,9 @@ public class MachineWindow extends JPanel implements MachineListener, ActionList
         this.setBackground(Color.CYAN);
 
 
+        g.fillRect(60, 210, (int) machine.getState().getConveyorPosition() - 60, 3);
+        g.fill3DRect((int) machine.getState().getConveyorPosition(), 200, 150, 20, true);
+
         Graphics2D g2d = (Graphics2D) g.create();
 
         g2d.setColor(Color.RED);
@@ -85,8 +88,6 @@ public class MachineWindow extends JPanel implements MachineListener, ActionList
         g2d.setTransform(at);
         g2d.drawImage(image, 0, 200, this);
         g2d.dispose();
-
-        g.fill3DRect((int) machine.getState().getConveyorPosition(), 200, 150, 30, true);
     }
 
     @Override
