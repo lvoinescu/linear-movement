@@ -45,7 +45,7 @@ public class FixedSpeedDriver implements Driver {
 
         StepDirection stepDirection = (destination > machine.getConveyorBelt().getCurrentPosition()) ? StepDirection.CLOCKWISE : StepDirection.COUNTER_CLOCKWISE;
         moving = true;
-        for (int i = 0; i < noOfRequiredSteps; i++) {
+        for (int i = 0; i <= noOfRequiredSteps; i++) {
             try {
                 Thread.sleep(speedCalculator.rotationSpeedToDelay(machine.getMotor().getStepAngle(), maxAngularSpeed));
             } catch (InterruptedException e) {

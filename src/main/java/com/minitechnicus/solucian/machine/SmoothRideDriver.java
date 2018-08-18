@@ -28,7 +28,7 @@ public class SmoothRideDriver implements Driver {
                 machine.getWheel().computeDeltaDistance(machine.getMotor().getStepAngle()));
 
         StepDirection stepDirection = (destination > machine.getConveyorBelt().getCurrentPosition()) ? StepDirection.CLOCKWISE : StepDirection.COUNTER_CLOCKWISE;
-        for (int i = 0; i < noOfStepsForDistance; i++) {
+        for (int i = 0; i <= noOfStepsForDistance; i++) {
             try {
                 currentSpeed = getSpeed(i, noOfStepsForDistance);
                 Thread.sleep(speedCalculator.rotationSpeedToDelay(machine.getMotor().getStepAngle(), currentSpeed));
@@ -37,6 +37,7 @@ public class SmoothRideDriver implements Driver {
             }
             machine.getMotor().moveStep(stepDirection);
         }
+        currentSpeed = 0;
     }
 
     @Override
