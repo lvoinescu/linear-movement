@@ -1,6 +1,5 @@
 package com.minitechnicus.solucian.components;
 
-import com.minitechnicus.solucian.machine.MachineListener;
 import lombok.Getter;
 
 import java.util.LinkedHashSet;

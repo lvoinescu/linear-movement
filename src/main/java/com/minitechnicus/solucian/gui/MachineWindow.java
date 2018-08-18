@@ -2,8 +2,8 @@ package com.minitechnicus.solucian.gui;
 
 import com.minitechnicus.solucian.components.Machine;
 import com.minitechnicus.solucian.components.MachineState;
-import com.minitechnicus.solucian.machine.Driver;
-import com.minitechnicus.solucian.machine.MachineListener;
+import com.minitechnicus.solucian.machine.DefaultDriver;
+import com.minitechnicus.solucian.components.MachineListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 public class MachineWindow extends JPanel implements MachineListener, ActionListener {
 
     private Machine machine;
-    private Driver driver;
+    private DefaultDriver defaultDriver;
     private JTextField angleSpeedInput;
     private JTextField moveToPointInput;
     private BufferedImage image;
@@ -29,7 +29,7 @@ public class MachineWindow extends JPanel implements MachineListener, ActionList
         super();
         this.machine = machine;
         machine.addObserver(this);
-        driver = new Driver(machine, 180);
+        defaultDriver = new DefaultDriver(machine, 180);
 
         JButton moveButton = new JButton("Move");
         moveButton.setVerticalTextPosition(AbstractButton.CENTER);
@@ -98,11 +98,11 @@ public class MachineWindow extends JPanel implements MachineListener, ActionList
     @Override
     public void actionPerformed(ActionEvent e) {
         if ("move".equals(e.getActionCommand())) {
-            driver.setMaxSpeed(Double.parseDouble(angleSpeedInput.getText()));
-            new Thread(() -> driver.moveToPoint(Double.parseDouble(moveToPointInput.getText()))).start();
+            defaultDriver.setMaxSpeed(Double.parseDouble(angleSpeedInput.getText()));
+            new Thread(() -> defaultDriver.moveToPoint(Double.parseDouble(moveToPointInput.getText()))).start();
         }
         if ("reset".equals(e.getActionCommand())) {
-            new Thread(() -> driver.resetToZeroPosition()).start();
+            new Thread(() -> defaultDriver.resetToZeroPosition()).start();
         }
     }
 }
