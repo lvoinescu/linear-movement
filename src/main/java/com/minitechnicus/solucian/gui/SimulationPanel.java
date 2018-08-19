@@ -38,19 +38,12 @@ public class SimulationPanel extends JPanel implements MachineListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.setBackground(Color.CYAN);
 
-
-        g.fillRect(60, 210, (int) machine.getState().getConveyorPosition() - 60, 3);
+        g.fillRect(70, 210, (int) machine.getState().getConveyorPosition() - 60, 3);
         g.fill3DRect((int) machine.getState().getConveyorPosition(), 200, 150, 20, true);
 
         Graphics2D g2d = (Graphics2D) g.create();
 
-        g2d.setColor(Color.RED);
-        g2d.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
-        g2d.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
-
-        g2d.setColor(Color.BLACK);
         AffineTransform at = new AffineTransform();
         at.setToRotation(Math.toRadians(machine.getMotor().getAnglePosition()), (image.getWidth() / 2), 200 + (image.getHeight() / 2));
         g2d.setTransform(at);

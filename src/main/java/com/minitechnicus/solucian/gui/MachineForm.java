@@ -63,7 +63,7 @@ public class MachineForm implements ActionListener {
             new Thread(() -> driver.resetToZeroPosition()).start();
         }
 
-        if ("default-driver".equals(e.getActionCommand())) {
+        if ("fixed-driver".equals(e.getActionCommand())) {
             driver = new FixedSpeedDriver(machine, 180);
         }
 

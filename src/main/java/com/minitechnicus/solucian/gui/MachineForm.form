@@ -4,7 +4,9 @@
     <constraints>
       <xy x="20" y="20" width="813" height="396"/>
     </constraints>
-    <properties/>
+    <properties>
+      <foreground color="-11776948"/>
+    </properties>
     <border type="none"/>
     <children>
       <grid id="432e5" binding="controlPanel" layout-manager="GridLayoutManager" row-count="1" column-count="9" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -47,7 +49,7 @@
             </constraints>
             <properties>
               <selected value="true"/>
-              <text value="fixed-speed"/>
+              <text value="fixed-driver"/>
             </properties>
           </component>
           <component id="e3a9f" class="javax.swing.JRadioButton" binding="smoothRideRadio">
@@ -97,7 +99,9 @@
       </grid>
       <component id="c8684" class="com.minitechnicus.solucian.gui.SimulationPanel" binding="simulationPanel" custom-create="true">
         <constraints border-constraint="Center"/>
-        <properties/>
+        <properties>
+          <foreground color="-11776948"/>
+        </properties>
       </component>
     </children>
   </grid>
