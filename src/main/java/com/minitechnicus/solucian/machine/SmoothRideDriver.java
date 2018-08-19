@@ -1,7 +1,5 @@
 package com.minitechnicus.solucian.machine;
 
-import com.minitechnicus.solucian.components.Machine;
-
 public class SmoothRideDriver implements Driver {
 
     private Machine machine;
@@ -20,23 +18,7 @@ public class SmoothRideDriver implements Driver {
         speedCalculator = new SpeedCalculator();
     }
 
-    @Override
-    public void driveToPoint(double destination) {
-        int noOfStepsForDistance = (int) (Math.abs(destination - machine.getConveyorBelt().getCurrentPosition()) /
-                machine.getWheel().computeDeltaDistance(machine.getMotor().getStepAngle()));
-
-        StepDirection stepDirection = (destination > machine.getConveyorBelt().getCurrentPosition()) ? StepDirection.CLOCKWISE : StepDirection.COUNTER_CLOCKWISE;
-        for (int i = 0; i <= noOfStepsForDistance; i++) {
-            try {
-                currentSpeed = getSpeed(i, noOfStepsForDistance);
-                Thread.sleep(speedCalculator.rotationSpeedToDelay(machine.getMotor().getStepAngle(), currentSpeed));
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            machine.getMotor().moveStep(stepDirection);
-        }
-        currentSpeed = 0;
-    }
+    private double speed;
 
     @Override
     public void setMaxAngularSpeed(double maxAngularSpeed) {
@@ -62,18 +44,44 @@ public class SmoothRideDriver implements Driver {
         this.machine = machine;
     }
 
-    private double getSpeed(int stepNumber, int stepsToDo) {
-        double speed;
+    @Override
+    public synchronized void driveToPoint(double destination) {
+        int noOfStepsForDistance = (int) (Math.abs(destination - machine.getConveyorBelt().getCurrentPosition()) /
+                machine.getWheel().computeDeltaDistance(machine.getMotor().getStepAngle()));
+
+        int noOfStepsNeededForMaxSpeed = (int) (maxAngularSpeed / angularAcceleration);
+
+        StepDirection stepDirection = (destination > machine.getConveyorBelt().getCurrentPosition()) ? StepDirection.CLOCKWISE : StepDirection.COUNTER_CLOCKWISE;
+        for (int i = 1; i <= noOfStepsForDistance; i++) {
+            try {
+                currentSpeed = getSpeed(i, noOfStepsForDistance, noOfStepsNeededForMaxSpeed);
+                Thread.sleep(speedCalculator.rotationSpeedToDelay(machine.getMotor().getStepAngle(), currentSpeed));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            machine.getMotor().moveStep(stepDirection);
+        }
+        currentSpeed = 0;
+        speed = 0;
+    }
+
+    /**
+     * In case there is no time to reach full speed, a triangle shape will be observed
+     */
+    private double getSpeed(int stepNumber, int stepsToDo, int noOfStepsNeededForMaxSpeed) {
         int changeStep = stepsToDo / 2;
-        if (stepNumber < changeStep) {
-            speed = minAngularSpeed + stepNumber * angularAcceleration;
+
+        if (stepNumber < changeStep && stepNumber <= noOfStepsNeededForMaxSpeed) {
+            speed = stepNumber * angularAcceleration;
         } else {
-            if (stepNumber > stepsToDo - changeStep) {
-                speed = minAngularSpeed + (stepsToDo - stepNumber) * angularAcceleration;
-            } else {
-                speed = maxAngularSpeed;
+            if (stepNumber > stepsToDo - changeStep && stepNumber > stepsToDo - noOfStepsNeededForMaxSpeed) {
+                speed = (stepsToDo - stepNumber) * angularAcceleration;
             }
         }
-        return speed;
+        return ensureMinimalSpeed(speed);
+    }
+
+    private double ensureMinimalSpeed(double speed) {
+        return speed < minAngularSpeed ? minAngularSpeed : speed;
     }
 }

@@ -1,6 +1,6 @@
 package com.minitechnicus.solucian.components;
 
-abstract class Rotatable {
+public abstract class Rotatable {
 
-    abstract void rotate(double angle);
+    public abstract void rotate(double angle);
 }

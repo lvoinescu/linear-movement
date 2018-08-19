@@ -1,10 +1,6 @@
 package com.minitechnicus.solucian.gui;
 
-import com.minitechnicus.solucian.components.Machine;
-import com.minitechnicus.solucian.components.MachineBuildDirector;
-import com.minitechnicus.solucian.machine.Driver;
-import com.minitechnicus.solucian.machine.FixedSpeedDriver;
-import com.minitechnicus.solucian.machine.SmoothRideDriver;
+import com.minitechnicus.solucian.machine.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

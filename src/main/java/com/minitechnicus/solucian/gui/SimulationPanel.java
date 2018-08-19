@@ -1,8 +1,8 @@
 package com.minitechnicus.solucian.gui;
 
-import com.minitechnicus.solucian.components.Machine;
-import com.minitechnicus.solucian.components.MachineListener;
-import com.minitechnicus.solucian.components.MachineState;
+import com.minitechnicus.solucian.machine.Machine;
+import com.minitechnicus.solucian.machine.MachineListener;
+import com.minitechnicus.solucian.machine.MachineState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

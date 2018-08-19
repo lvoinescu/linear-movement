@@ -13,11 +13,11 @@ public class Wheel extends Rotatable {
     private double currentAngle;
     private Set<LinearShifter> linearShifters = new LinkedHashSet<>();
 
-    Wheel(double radius) {
+    public Wheel(double radius) {
         this.radius = radius;
     }
 
-    void rotate(double angle) {
+    public void rotate(double angle) {
         this.currentAngle += angle;
         double deltaDistance = computeDeltaDistance(angle);
         linearShifters.forEach(s -> s.move(deltaDistance));

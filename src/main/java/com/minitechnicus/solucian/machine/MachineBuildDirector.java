@@ -1,4 +1,8 @@
-package com.minitechnicus.solucian.components;
+package com.minitechnicus.solucian.machine;
+
+import com.minitechnicus.solucian.components.ConveyorBelt;
+import com.minitechnicus.solucian.components.Motor;
+import com.minitechnicus.solucian.components.Wheel;
 
 public class MachineBuildDirector {
 

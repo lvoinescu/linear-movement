@@ -1,4 +1,4 @@
-package com.minitechnicus.solucian.components;
+package com.minitechnicus.solucian.machine;
 
 public interface MachineListener {
 

@@ -16,7 +16,7 @@ public class Motor extends Rotatable {
     private double anglePosition;
     private Set<Rotatable> observers = new LinkedHashSet<>();
 
-    Motor(double stepAngle, int numberOfSteps) {
+    public Motor(double stepAngle, int numberOfSteps) {
         this.stepAngle = stepAngle;
         this.numberOfSteps = numberOfSteps;
     }
@@ -24,10 +24,9 @@ public class Motor extends Rotatable {
     public void moveStep(StepDirection stepDirection) {
         double rotationAngle = stepDirection == StepDirection.CLOCKWISE ? stepAngle : -stepAngle;
         this.rotate(rotationAngle);
-        this.anglePosition += rotationAngle;
     }
 
-    void rotate(double angle) {
+    public void rotate(double angle) {
         anglePosition += angle;
         observers.forEach(e -> e.rotate(angle));
     }

@@ -1,6 +1,9 @@
-package com.minitechnicus.solucian.components;
+package com.minitechnicus.solucian.machine;
 
-import com.minitechnicus.solucian.machine.Driver;
+import com.minitechnicus.solucian.components.ConveyorBelt;
+import com.minitechnicus.solucian.components.Motor;
+import com.minitechnicus.solucian.components.Rotatable;
+import com.minitechnicus.solucian.components.Wheel;
 import lombok.Getter;
 
 import java.util.LinkedHashSet;
@@ -24,7 +27,7 @@ public class Machine {
         this.motor.attach(new Rotatable() {
 
             @Override
-            void rotate(double angle) {
+            public void rotate(double angle) {
                 Machine.this.machineListeners.forEach(e -> e.stateChanged(
                         new MachineState(conveyorBelt.getCurrentPosition(), motor.getAnglePosition(), driver.getCurrentSpeed())));
             }
@@ -42,6 +45,7 @@ public class Machine {
 
     public void moveToPoint(double destination) {
         driver.driveToPoint(destination);
+        machineListeners.forEach(e -> e.stateChanged(getState()));
     }
 
     public MachineState getState() {

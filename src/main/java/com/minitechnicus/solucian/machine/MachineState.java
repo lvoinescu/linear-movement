@@ -1,4 +1,4 @@
-package com.minitechnicus.solucian.components;
+package com.minitechnicus.solucian.machine;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
