@@ -2,11 +2,8 @@ package com.minitechnicus.solucian.components;
 
 public class MachineBuildDirector {
 
-    public Machine buildMachine(double stepperMotorAngle,
-                                int stepperMotorMaxSteps,
-                                double wheelRadius) {
+    public Machine buildMachine(double stepperMotorAngle, int stepperMotorMaxSteps, double wheelRadius) {
         Motor motor = new Motor(stepperMotorAngle, stepperMotorMaxSteps);
-
 
         ConveyorBelt conveyorBelt = new ConveyorBelt();
         Wheel wheel = new Wheel(wheelRadius);

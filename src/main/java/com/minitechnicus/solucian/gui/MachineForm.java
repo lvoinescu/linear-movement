@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MachineForm implements ActionListener {
+    public static final int MAX_ANGULAR_SPEED = 360;
     private JPanel mainPanel;
     private JPanel controlPanel;
     private JPanel simulationPanel;
@@ -21,18 +22,35 @@ public class MachineForm implements ActionListener {
     private JButton moveButton;
     private JTextField positionInput;
     private JButton resetButton;
+    private JTextField maxAngularAccelerationInput;
 
-    private Driver driver;
+    private Driver fixedDriver;
+    private SmoothRideDriver smoothDriver;
     private Machine machine;
 
 
     private MachineForm(Machine machine) {
         this.machine = machine;
-        this.driver = new FixedSpeedDriver(machine, 360);
+        this.fixedDriver = new FixedSpeedDriver(MAX_ANGULAR_SPEED);
+        this.smoothDriver = new SmoothRideDriver(40, 180, 2);
         moveButton.addActionListener(this);
         resetButton.addActionListener(this);
         fixedSpeedRadio.addActionListener(this);
         smoothRideRadio.addActionListener(this);
+        maxAngularAccelerationInput.addActionListener(e -> {
+            smoothDriver.setAngularAcceleration(Double.parseDouble(maxAngularAccelerationInput.getText()));
+
+        });
+
+        angularSpeedInput.addActionListener(e -> {
+            fixedDriver.setMaxAngularSpeed(Double.parseDouble(angularSpeedInput.getText()));
+            smoothDriver.setMaxAngularSpeed(Double.parseDouble(angularSpeedInput.getText()));
+        });
+
+        smoothDriver.setMaxAngularSpeed(Double.parseDouble(angularSpeedInput.getText()));
+        fixedDriver.setMaxAngularSpeed(Double.parseDouble(angularSpeedInput.getText()));
+        smoothDriver.setAngularAcceleration(Double.parseDouble(maxAngularAccelerationInput.getText()));
+        machine.attachDriver(fixedDriver);
     }
 
     public static void main(String[] args) {
@@ -55,20 +73,22 @@ public class MachineForm implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if ("move".equals(e.getActionCommand())) {
-            driver.setMaxAngularSpeed(Double.parseDouble(angularSpeedInput.getText()));
-            new Thread(() -> driver.moveToPoint(Double.parseDouble(positionInput.getText()))).start();
-        }
-        if ("reset".equals(e.getActionCommand())) {
-            new Thread(() -> driver.resetToZeroPosition()).start();
-        }
 
-        if ("fixed-driver".equals(e.getActionCommand())) {
-            driver = new FixedSpeedDriver(machine, 180);
-        }
-
-        if ("smooth-driver".equals(e.getActionCommand())) {
-            driver = new SmoothRideDriver(machine, 40, 180, 2);
+        switch (e.getActionCommand()) {
+            case "move":
+                new Thread(() -> machine.moveToPoint(Double.parseDouble(positionInput.getText()))).start();
+                break;
+            case "reset":
+                new Thread(() -> machine.resetToZeroPosition()).start();
+                break;
+            case "fixed-driver":
+                machine.attachDriver(fixedDriver);
+                maxAngularAccelerationInput.setEnabled(false);
+                break;
+            case "smooth-driver":
+                machine.attachDriver(smoothDriver);
+                maxAngularAccelerationInput.setEnabled(true);
+                break;
         }
     }
 }

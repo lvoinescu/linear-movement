@@ -26,7 +26,7 @@ public class SimulationPanel extends JPanel implements MachineListener {
         this.machine = machine;
         this.setDoubleBuffered(true);
         this.machine.addObserver(this);
-        driver = new FixedSpeedDriver(machine, 180);
+        driver = new FixedSpeedDriver(180);
 
         try {
             image = ImageIO.read(new File(getClass().getClassLoader().getResource("gear.png").toURI()));

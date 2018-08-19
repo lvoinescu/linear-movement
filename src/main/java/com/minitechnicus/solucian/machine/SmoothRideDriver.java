@@ -4,18 +4,16 @@ import com.minitechnicus.solucian.components.Machine;
 
 public class SmoothRideDriver implements Driver {
 
-    private final Machine machine;
+    private Machine machine;
     private final SpeedCalculator speedCalculator;
     private double maxAngularSpeed;
     private final double minAngularSpeed;
-    private final double angularAcceleration;
+    private double angularAcceleration;
     private volatile double currentSpeed;
 
-    public SmoothRideDriver(Machine machine,
-                            double minAngularSpeed,
+    public SmoothRideDriver(double minAngularSpeed,
                             double maxAngularSpeed,
                             double angularAcceleration) {
-        this.machine = machine;
         this.maxAngularSpeed = maxAngularSpeed;
         this.minAngularSpeed = minAngularSpeed;
         this.angularAcceleration = angularAcceleration;
@@ -23,7 +21,7 @@ public class SmoothRideDriver implements Driver {
     }
 
     @Override
-    public void moveToPoint(double destination) {
+    public void driveToPoint(double destination) {
         int noOfStepsForDistance = (int) (Math.abs(destination - machine.getConveyorBelt().getCurrentPosition()) /
                 machine.getWheel().computeDeltaDistance(machine.getMotor().getStepAngle()));
 
@@ -45,14 +43,23 @@ public class SmoothRideDriver implements Driver {
         this.maxAngularSpeed = maxAngularSpeed;
     }
 
+    public void setAngularAcceleration(double angularAcceleration) {
+        this.angularAcceleration = angularAcceleration;
+    }
+
     @Override
-    public void resetToZeroPosition() {
-        moveToPoint(0.0d);
+    public void driveToZero() {
+        driveToPoint(0.0d);
     }
 
     @Override
     public double getCurrentSpeed() {
         return currentSpeed;
+    }
+
+    @Override
+    public void attachToMachine(Machine machine) {
+        this.machine = machine;
     }
 
     private double getSpeed(int stepNumber, int stepsToDo) {

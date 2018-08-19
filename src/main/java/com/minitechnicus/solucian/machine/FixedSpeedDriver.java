@@ -5,16 +5,14 @@ import com.minitechnicus.solucian.components.Machine;
 
 public class FixedSpeedDriver implements Driver {
 
-    private final Machine machine;
+    private Machine machine;
     private double maxAngularSpeed;
     private final SpeedCalculator speedCalculator;
     private volatile boolean moving;
 
-    public FixedSpeedDriver(Machine machine,
-                            double maxAngularSpeed) {
-        this.machine = machine;
+    public FixedSpeedDriver(double maxAngularSpeed) {
         this.maxAngularSpeed = maxAngularSpeed;
-        speedCalculator = new SpeedCalculator();
+        this.speedCalculator = new SpeedCalculator();
     }
 
     public void setMaxAngularSpeed(double maxAngularSpeed) {
@@ -22,12 +20,12 @@ public class FixedSpeedDriver implements Driver {
     }
 
     @Override
-    public void moveToPoint(double destination) {
+    public void driveToPoint(double destination) {
         doMoveToPoint(destination);
     }
 
     @Override
-    public void resetToZeroPosition() {
+    public void driveToZero() {
         double destination = 0.0d;
         doMoveToPoint(destination);
     }
@@ -35,6 +33,11 @@ public class FixedSpeedDriver implements Driver {
     @Override
     public double getCurrentSpeed() {
         return moving ? maxAngularSpeed : 0.0d;
+    }
+
+    @Override
+    public void attachToMachine(Machine machine) {
+        this.machine = machine;
     }
 
     private synchronized void doMoveToPoint(double destination) {

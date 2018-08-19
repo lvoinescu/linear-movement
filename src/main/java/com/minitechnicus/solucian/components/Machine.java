@@ -1,5 +1,6 @@
 package com.minitechnicus.solucian.components;
 
+import com.minitechnicus.solucian.machine.Driver;
 import lombok.Getter;
 
 import java.util.LinkedHashSet;
@@ -11,7 +12,7 @@ public class Machine {
     private final Motor motor;
     private final Wheel wheel;
     private final ConveyorBelt conveyorBelt;
-
+    private Driver driver;
     private final Set<MachineListener> machineListeners = new LinkedHashSet<>();
 
     Machine(Motor motor,
@@ -30,12 +31,25 @@ public class Machine {
         });
     }
 
-    public void addObserver(MachineListener machineListener){
+    public void addObserver(MachineListener machineListener) {
         this.machineListeners.add(machineListener);
     }
 
-    public MachineState getState(){
+    public void attachDriver(Driver driver) {
+        this.driver = driver;
+        driver.attachToMachine(this);
+    }
+
+    public void moveToPoint(double destination) {
+        driver.driveToPoint(destination);
+    }
+
+
+    public MachineState getState() {
         return new MachineState(conveyorBelt.getCurrentPosition(), motor.getAnglePosition());
     }
 
+    public void resetToZeroPosition() {
+        driver.driveToZero();
+    }
 }
