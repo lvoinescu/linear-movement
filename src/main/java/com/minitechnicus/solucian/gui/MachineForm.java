@@ -59,7 +59,6 @@ public class MachineForm extends JPanel implements ActionListener {
     public static void main(String[] args) {
         MachineBuildDirector machineBuildDirector = new MachineBuildDirector();
         Machine machine = machineBuildDirector.buildMachine(1.8D, 200, 10);
-        machine.addObserver((e) -> System.out.println(e.getConveyorPosition()));
 
         JFrame jFrame = new JFrame("Conveyor belt");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
