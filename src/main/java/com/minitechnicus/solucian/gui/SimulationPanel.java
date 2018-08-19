@@ -3,8 +3,6 @@ package com.minitechnicus.solucian.gui;
 import com.minitechnicus.solucian.components.Machine;
 import com.minitechnicus.solucian.components.MachineListener;
 import com.minitechnicus.solucian.components.MachineState;
-import com.minitechnicus.solucian.machine.Driver;
-import com.minitechnicus.solucian.machine.FixedSpeedDriver;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,21 +16,21 @@ import java.net.URISyntaxException;
 public class SimulationPanel extends JPanel implements MachineListener {
 
     private Machine machine;
-    private Driver driver;
     private BufferedImage image;
+    private MachineState machineState;
 
     SimulationPanel(Machine machine) {
         super(new GridBagLayout());
         this.machine = machine;
         this.setDoubleBuffered(true);
         this.machine.addObserver(this);
-        driver = new FixedSpeedDriver(180);
 
         try {
             image = ImageIO.read(new File(getClass().getClassLoader().getResource("gear.png").toURI()));
         } catch (IOException | URISyntaxException ex) {
             ex.printStackTrace();
         }
+        this.machineState = new MachineState(0, 0, 0);
     }
 
     @Override
@@ -50,13 +48,14 @@ public class SimulationPanel extends JPanel implements MachineListener {
         g2d.drawImage(image, 0, 200, this);
         g2d.dispose();
 
-        g.drawString("Current position:" + Math.round(machine.getConveyorBelt().getCurrentPosition()), 10, 340);
-        g.drawString("Current speed:" + Math.round(driver.getCurrentSpeed()), 10, 355);
-        g.drawString("Current motor angle:" + Math.round(machine.getMotor().getAnglePosition()), 10, 370);
+        g.drawString("Current position:" + Math.round(machineState.getConveyorPosition()), 10, 340);
+        g.drawString("Current speed:" + Math.round(machineState.getCurrentSpeed()), 10, 355);
+        g.drawString("Current motor angle:" + Math.round(machineState.getMotorAngle()), 10, 370);
     }
 
     @Override
     public void stateChanged(MachineState machineState) {
+        this.machineState = machineState;
         repaint();
     }
 }

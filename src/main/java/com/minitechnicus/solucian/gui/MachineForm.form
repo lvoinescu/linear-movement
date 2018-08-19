@@ -116,12 +116,28 @@
           </component>
         </children>
       </grid>
-      <component id="c8684" class="com.minitechnicus.solucian.gui.SimulationPanel" binding="simulationPanel" custom-create="true">
+      <splitpane id="bd5a3" binding="splitPane1">
         <constraints border-constraint="Center"/>
         <properties>
-          <foreground color="-11776948"/>
+          <continuousLayout value="true"/>
+          <dividerLocation value="500"/>
+          <orientation value="0"/>
         </properties>
-      </component>
+        <border type="none"/>
+        <children>
+          <component id="20088" class="com.minitechnicus.solucian.gui.SimulationPanel" binding="simulationPanel" custom-create="true">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="fcabc" class="com.minitechnicus.solucian.gui.SpeedPanel" binding="speedPanel" custom-create="true">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+          </component>
+        </children>
+      </splitpane>
     </children>
   </grid>
   <buttonGroups>

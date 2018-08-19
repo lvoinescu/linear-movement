@@ -26,7 +26,7 @@ public class Machine {
             @Override
             void rotate(double angle) {
                 Machine.this.machineListeners.forEach(e -> e.stateChanged(
-                        new MachineState(conveyorBelt.getCurrentPosition(), motor.getAnglePosition())));
+                        new MachineState(conveyorBelt.getCurrentPosition(), motor.getAnglePosition(), driver.getCurrentSpeed())));
             }
         });
     }
@@ -44,9 +44,8 @@ public class Machine {
         driver.driveToPoint(destination);
     }
 
-
     public MachineState getState() {
-        return new MachineState(conveyorBelt.getCurrentPosition(), motor.getAnglePosition());
+        return new MachineState(conveyorBelt.getCurrentPosition(), motor.getAnglePosition(), driver.getCurrentSpeed());
     }
 
     public void resetToZeroPosition() {

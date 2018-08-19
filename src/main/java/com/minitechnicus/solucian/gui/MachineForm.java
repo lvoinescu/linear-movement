@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MachineForm implements ActionListener {
+public class MachineForm extends JPanel implements ActionListener {
     public static final int MAX_ANGULAR_SPEED = 360;
     private JPanel mainPanel;
     private JPanel controlPanel;
@@ -23,6 +23,8 @@ public class MachineForm implements ActionListener {
     private JTextField positionInput;
     private JButton resetButton;
     private JTextField maxAngularAccelerationInput;
+    private JSplitPane splitPane1;
+    private JPanel speedPanel;
 
     private Driver fixedDriver;
     private SmoothRideDriver smoothDriver;
@@ -61,14 +63,18 @@ public class MachineForm implements ActionListener {
         JFrame jFrame = new JFrame("Conveyor belt");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        jFrame.getContentPane().add(new MachineForm(machine).mainPanel);
+        JPanel machinePanel = new MachineForm(machine).mainPanel;
+        jFrame.getContentPane().add(machinePanel);
+
+
         jFrame.pack();
-        jFrame.setSize(1400, 400);
+        jFrame.setSize(1400, 800);
         jFrame.setVisible(true);
     }
 
     public void createUIComponents() {
         simulationPanel = new SimulationPanel(machine);
+        speedPanel = new SpeedPanel(machine);
     }
 
     @Override

@@ -9,4 +9,5 @@ public class MachineState {
 
     private final double conveyorPosition;
     private final double motorAngle;
+    private final double currentSpeed;
 }
