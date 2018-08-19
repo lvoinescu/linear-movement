@@ -8,7 +8,7 @@ import java.util.Set;
 @Getter
 public class Wheel extends Rotatable {
 
-    private final double radius;
+    private double radius;
 
     private double currentAngle;
     private Set<LinearShifter> linearShifters = new LinkedHashSet<>();
@@ -21,6 +21,10 @@ public class Wheel extends Rotatable {
         this.currentAngle += angle;
         double deltaDistance = computeDeltaDistance(angle);
         linearShifters.forEach(s -> s.move(deltaDistance));
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     public void attach(LinearShifter linearShifter) {

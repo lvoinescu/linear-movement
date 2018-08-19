@@ -54,7 +54,7 @@ public class SmoothRideDriver implements Driver {
         StepDirection stepDirection = (destination > machine.getConveyorBelt().getCurrentPosition()) ? StepDirection.CLOCKWISE : StepDirection.COUNTER_CLOCKWISE;
         for (int i = 1; i <= noOfStepsForDistance; i++) {
             try {
-                currentSpeed = getSpeed(i, noOfStepsForDistance, noOfStepsNeededForMaxSpeed);
+                currentSpeed = ensureMinimalSpeed(getSpeed(i, noOfStepsForDistance, noOfStepsNeededForMaxSpeed));
                 Thread.sleep(speedCalculator.rotationSpeedToDelay(machine.getMotor().getStepAngle(), currentSpeed));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -78,7 +78,7 @@ public class SmoothRideDriver implements Driver {
                 speed = (stepsToDo - stepNumber) * angularAcceleration;
             }
         }
-        return ensureMinimalSpeed(speed);
+        return speed;
     }
 
     private double ensureMinimalSpeed(double speed) {

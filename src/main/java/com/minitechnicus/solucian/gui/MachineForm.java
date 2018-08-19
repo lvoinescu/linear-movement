@@ -21,6 +21,7 @@ public class MachineForm extends JPanel implements ActionListener {
     private JTextField maxAngularAccelerationInput;
     private JSplitPane splitPane1;
     private JPanel speedPanel;
+    private JTextField wheelRadiusInput;
 
     private Driver fixedDriver;
     private SmoothRideDriver smoothDriver;
@@ -30,7 +31,7 @@ public class MachineForm extends JPanel implements ActionListener {
     private MachineForm(Machine machine) {
         this.machine = machine;
         this.fixedDriver = new FixedSpeedDriver(MAX_ANGULAR_SPEED);
-        this.smoothDriver = new SmoothRideDriver(40, 180, 2);
+        this.smoothDriver = new SmoothRideDriver(10, 180, 2);
         moveButton.addActionListener(this);
         resetButton.addActionListener(this);
         fixedSpeedRadio.addActionListener(this);
@@ -45,6 +46,10 @@ public class MachineForm extends JPanel implements ActionListener {
             smoothDriver.setMaxAngularSpeed(Double.parseDouble(angularSpeedInput.getText()));
         });
 
+        wheelRadiusInput.addActionListener(e -> {
+            machine.getWheel().setRadius(Double.parseDouble(wheelRadiusInput.getText()));
+        });
+
         smoothDriver.setMaxAngularSpeed(Double.parseDouble(angularSpeedInput.getText()));
         fixedDriver.setMaxAngularSpeed(Double.parseDouble(angularSpeedInput.getText()));
         smoothDriver.setAngularAcceleration(Double.parseDouble(maxAngularAccelerationInput.getText()));
@@ -53,7 +58,7 @@ public class MachineForm extends JPanel implements ActionListener {
 
     public static void main(String[] args) {
         MachineBuildDirector machineBuildDirector = new MachineBuildDirector();
-        Machine machine = machineBuildDirector.buildMachine(1.8D, 200, 100);
+        Machine machine = machineBuildDirector.buildMachine(1.8D, 200, 10);
         machine.addObserver((e) -> System.out.println(e.getConveyorPosition()));
 
         JFrame jFrame = new JFrame("Conveyor belt");
@@ -64,7 +69,7 @@ public class MachineForm extends JPanel implements ActionListener {
 
 
         jFrame.pack();
-        jFrame.setSize(1400, 800);
+        jFrame.setSize(1300, 800);
         jFrame.setVisible(true);
     }
 
